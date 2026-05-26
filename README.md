@@ -1,5 +1,5 @@
 # LUNAS_ARCADE
-This is a game website with many things always updating but still in beta
+This is a game website to get good games during school and when bored 
 beta v.0.1
 
 VISIT THE OFFICAL WEBSITE
