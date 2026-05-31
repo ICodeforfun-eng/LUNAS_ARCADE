@@ -1,0 +1,364 @@
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  #game { font-family: 'Courier New', monospace; background: #0a0a0a; color: #c8a050; min-height: 600px; position: relative; overflow: hidden; user-select: none; }
+  #office { width: 100%; height: 600px; position: relative; background: radial-gradient(ellipse at center, #1a1008 0%, #0a0600 60%, #000 100%); }
+  .wall { position: absolute; top: 0; bottom: 0; width: 140px; background: linear-gradient(to right, #0d0a05, #1a1208); border: 1px solid #2a1f05; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; }
+  #left-wall { left: 0; }
+  #right-wall { right: 0; }
+  .door-btn { width: 110px; padding: 10px 0; background: #1a1005; border: 2px solid #c8a050; color: #c8a050; font-family: 'Courier New', monospace; font-size: 12px; cursor: pointer; letter-spacing: 1px; transition: all 0.2s; }
+  .door-btn:hover { background: #2a2010; }
+  .door-btn.closed { background: #3a2a05; border-color: #ff6600; color: #ff6600; }
+  .light-btn { width: 110px; padding: 8px 0; background: #0a0a05; border: 1px solid #888; color: #aaa; font-family: 'Courier New', monospace; font-size: 11px; cursor: pointer; letter-spacing: 1px; transition: all 0.2s; }
+  .light-btn:hover { background: #1a1a10; }
+  .light-btn.on { background: #2a2a10; border-color: #ffee44; color: #ffee44; }
+  .door-visual { width: 90px; height: 160px; background: #111; border: 2px solid #333; position: relative; transition: all 0.3s; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #444; }
+  .door-visual.door-open { background: #0a0000; border-color: #1a0000; }
+  .door-visual.door-closed { background: #2a1a00; border-color: #c8a050; color: #c8a050; }
+  #center { position: absolute; left: 140px; right: 140px; top: 0; bottom: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  #desk { position: absolute; bottom: 60px; left: 50%; transform: translateX(-50%); width: 260px; height: 55px; background: #1a1005; border: 2px solid #3a2a10; border-radius: 4px; display: flex; align-items: center; justify-content: center; }
+  #cam-btn { padding: 10px 24px; background: #0a0a00; border: 2px solid #c8a050; color: #c8a050; font-family: 'Courier New', monospace; font-size: 13px; cursor: pointer; letter-spacing: 2px; transition: all 0.2s; }
+  #cam-btn:hover { background: #1a1a00; }
+  #power-display { position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); font-size: 13px; color: #c8a050; letter-spacing: 1px; }
+  #time-display { position: absolute; top: 15px; left: 50%; transform: translateX(-50%); font-size: 20px; color: #c8a050; letter-spacing: 3px; font-weight: bold; }
+  #night-display { position: absolute; top: 45px; left: 50%; transform: translateX(-50%); font-size: 12px; color: #806030; letter-spacing: 2px; }
+  #cam-overlay { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #050a05; z-index: 10; flex-direction: column; }
+  #cam-overlay.active { display: flex; }
+  #cam-header { display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; border-bottom: 1px solid #0a2a0a; background: #030803; }
+  #cam-title { font-size: 14px; color: #30ff30; letter-spacing: 2px; }
+  #cam-close { padding: 6px 16px; background: #0a1a0a; border: 1px solid #30ff30; color: #30ff30; font-family: 'Courier New', monospace; font-size: 11px; cursor: pointer; }
+  #cam-feed { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; padding: 10px; }
+  #cam-view { width: 100%; max-width: 500px; height: 280px; background: #030f03; border: 1px solid #0a3a0a; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+  .cam-noise { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.05; background-image: repeating-linear-gradient(0deg, transparent, transparent 2px, #0f0 2px, #0f0 3px); pointer-events: none; }
+  #cam-cat-img { max-height: 250px; max-width: 100%; object-fit: contain; opacity: 0.85; filter: sepia(0.5) hue-rotate(80deg) brightness(0.7); display: none; }
+  #cam-location { position: absolute; top: 8px; left: 8px; font-size: 11px; color: #20cc20; letter-spacing: 1px; }
+  #cam-status { position: absolute; bottom: 8px; right: 8px; font-size: 10px; color: #20cc20; }
+  .cam-select { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-top: 12px; }
+  .cam-tab { padding: 7px 14px; background: #030803; border: 1px solid #0a2a0a; color: #20cc20; font-family: 'Courier New', monospace; font-size: 11px; cursor: pointer; letter-spacing: 1px; transition: all 0.2s; }
+  .cam-tab:hover, .cam-tab.active { background: #0a1a0a; border-color: #30ff30; }
+  #cam-power-note { font-size: 10px; color: #0a6a0a; margin-top: 8px; }
+  #jumpscare { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 50; align-items: center; justify-content: center; }
+  #jumpscare.active { display: flex; }
+  #js-img { max-width: 100%; max-height: 100%; object-fit: cover; width: 100%; height: 100%; }
+  #gameover { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 60; flex-direction: column; align-items: center; justify-content: center; gap: 20px; }
+  #gameover.active { display: flex; }
+  #go-text { font-size: 32px; color: #cc2020; letter-spacing: 4px; animation: flicker 0.5s infinite; }
+  @keyframes flicker { 0%,100%{opacity:1} 50%{opacity:0.6} }
+  #go-sub { font-size: 14px; color: #883020; letter-spacing: 2px; }
+  #restart-btn { padding: 12px 32px; background: #1a0000; border: 2px solid #cc2020; color: #cc2020; font-family: 'Courier New', monospace; font-size: 14px; cursor: pointer; letter-spacing: 2px; margin-top: 10px; }
+  #restart-btn:hover { background: #2a0505; }
+  #win-screen { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 60; flex-direction: column; align-items: center; justify-content: center; gap: 16px; }
+  #win-screen.active { display: flex; }
+  #win-text { font-size: 28px; color: #c8a050; letter-spacing: 3px; }
+  #win-sub { font-size: 13px; color: #806030; letter-spacing: 2px; }
+  .shadow-left { position: absolute; left: 140px; top: 0; bottom: 0; width: 60px; background: linear-gradient(to right, #000, transparent); pointer-events: none; }
+  .shadow-right { position: absolute; right: 140px; top: 0; bottom: 0; width: 60px; background: linear-gradient(to left, #000, transparent); pointer-events: none; }
+  #power-bar-wrap { position: absolute; bottom: 10px; left: 20px; width: 120px; }
+  #power-bar-wrap label { font-size: 10px; color: #806030; display: block; margin-bottom: 3px; letter-spacing: 1px; }
+  #power-bar { height: 8px; background: #111; border: 1px solid #333; position: relative; }
+  #power-fill { height: 100%; background: #c8a050; transition: width 0.5s; }
+  #light-glow-left { position: absolute; left: 140px; top: 0; bottom: 0; width: 100px; background: linear-gradient(to right, rgba(255,220,80,0.18), transparent); pointer-events: none; display: none; }
+  #light-glow-right { position: absolute; right: 140px; top: 0; bottom: 0; width: 100px; background: linear-gradient(to left, rgba(255,220,80,0.18), transparent); pointer-events: none; display: none; }
+  #cat-at-door { position: absolute; font-size: 11px; color: #ff3333; letter-spacing: 1px; top: 10px; }
+  #start-screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 70; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; }
+  #start-title { font-size: 26px; color: #c8a050; letter-spacing: 4px; text-align: center; line-height: 1.3; }
+  #start-sub { font-size: 12px; color: #806030; letter-spacing: 2px; text-align: center; max-width: 320px; line-height: 1.8; }
+  #start-btn { padding: 12px 36px; background: #1a1005; border: 2px solid #c8a050; color: #c8a050; font-family: 'Courier New', monospace; font-size: 15px; cursor: pointer; letter-spacing: 3px; margin-top: 8px; }
+  #start-btn:hover { background: #2a2010; }
+</style>
+
+<div id="game">
+  <div id="start-screen">
+    <div id="start-title">FIVE NIGHTS<br>AT LUNA'S</div>
+    <div id="start-sub">Survive from 12AM to 6AM.<br>Watch the cameras. Close the doors.<br>Don't run out of power.</div>
+    <button id="start-btn" onclick="startGame()">START NIGHT</button>
+  </div>
+
+  <div id="office">
+    <div id="left-wall" class="wall">
+      <div id="left-door-visual" class="door-visual door-open">OPEN</div>
+      <button class="door-btn" id="left-door-btn" onclick="toggleDoor('left')">DOOR<br>[OPEN]</button>
+      <button class="light-btn" id="left-light-btn" onclick="toggleLight('left')">LIGHT<br>[OFF]</button>
+    </div>
+    <div id="right-wall" class="wall">
+      <div id="right-door-visual" class="door-visual door-open">OPEN</div>
+      <button class="door-btn" id="right-door-btn" onclick="toggleDoor('right')">DOOR<br>[OPEN]</button>
+      <button class="light-btn" id="right-light-btn" onclick="toggleLight('right')">LIGHT<br>[OFF]</button>
+    </div>
+
+    <div id="light-glow-left"></div>
+    <div id="light-glow-right"></div>
+    <div class="shadow-left"></div>
+    <div class="shadow-right"></div>
+
+    <div id="center">
+      <div id="time-display">12:00 AM</div>
+      <div id="night-display">NIGHT 1</div>
+      <div id="cat-at-door"></div>
+      <div style="font-size:11px;color:#403010;letter-spacing:1px;text-align:center;padding:0 20px;">MONITOR YOUR CAMERAS<br>CLOSE THE DOORS BEFORE LUNA REACHES YOU</div>
+    </div>
+
+    <div id="desk">
+      <button id="cam-btn" onclick="openCams()">[ CAMERAS ]</button>
+    </div>
+
+    <div id="power-bar-wrap">
+      <label>POWER</label>
+      <div id="power-bar"><div id="power-fill" style="width:100%"></div></div>
+    </div>
+    <div id="power-display">100%</div>
+  </div>
+
+  <div id="cam-overlay">
+    <div id="cam-header">
+      <div id="cam-title">CAM SYSTEM — ACTIVE</div>
+      <button id="cam-close" onclick="closeCams()">[ CLOSE ]</button>
+    </div>
+    <div id="cam-feed">
+      <div id="cam-view">
+        <div class="cam-noise"></div>
+        <img id="cam-cat-img" src="" alt="camera feed" />
+        <div id="cam-location">CAM 1A — LOBBY</div>
+        <div id="cam-status">● REC</div>
+      </div>
+      <div class="cam-select">
+        <button class="cam-tab active" onclick="selectCam(0,this)">CAM 1A<br>LOBBY</button>
+        <button class="cam-tab" onclick="selectCam(1,this)">CAM 2B<br>HALL E</button>
+        <button class="cam-tab" onclick="selectCam(2,this)">CAM 3C<br>SUPPLY</button>
+        <button class="cam-tab" onclick="selectCam(3,this)">CAM 4D<br>L-DOOR</button>
+        <button class="cam-tab" onclick="selectCam(4,this)">CAM 5E<br>R-DOOR</button>
+      </div>
+      <div id="cam-power-note">CAMERAS DRAIN POWER WHILE ACTIVE</div>
+    </div>
+  </div>
+
+  <div id="jumpscare">
+    <img id="js-img" src="" alt="jumpscare" />
+  </div>
+
+  <div id="gameover">
+    <div id="go-text">GAME OVER</div>
+    <div id="go-sub">LUNA GOT YOU</div>
+    <button id="restart-btn" onclick="restartGame()">TRY AGAIN</button>
+  </div>
+
+  <div id="win-screen">
+    <div id="win-text">6 AM</div>
+    <div id="win-sub">YOU SURVIVED THE NIGHT</div>
+    <button id="restart-btn" style="border-color:#c8a050;color:#c8a050;" onclick="restartGame()">PLAY AGAIN</button>
+  </div>
+</div>
+
+<script>
+const CAT_IMAGES = [
+  '/mnt/user-data/uploads/20251222_194023.jpg',
+  '/mnt/user-data/uploads/IMG_2981.PNG',
+  '/mnt/user-data/uploads/IMG_0380_thumbnail.jpg'
+];
+
+const CAM_NAMES = ['CAM 1A — LOBBY', 'CAM 2B — HALL E', 'CAM 3C — SUPPLY', 'CAM 4D — L-DOOR', 'CAM 5E — R-DOOR'];
+
+const base64Images = {};
+
+async function loadImages() {
+  const toBase64 = (path) => new Promise((resolve) => {
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = () => {
+      try {
+        const c = document.createElement('canvas');
+        c.width = img.naturalWidth; c.height = img.naturalHeight;
+        c.getContext('2d').drawImage(img, 0, 0);
+        resolve(c.toDataURL('image/jpeg', 0.85));
+      } catch(e) { resolve(path); }
+    };
+    img.onerror = () => resolve(path);
+    img.src = path;
+  });
+  for (let i = 0; i < CAT_IMAGES.length; i++) {
+    base64Images[i] = await toBase64(CAT_IMAGES[i]);
+  }
+}
+loadImages();
+
+let state = {
+  power: 100, hour: 0, gameRunning: false,
+  leftDoor: false, rightDoor: false, leftLight: false, rightLight: false,
+  camsOpen: false, cats: [], ticks: 0, jumpscareActive: false, intervals: []
+};
+
+const HOURS = ['12:00 AM','1:00 AM','2:00 AM','3:00 AM','4:00 AM','5:00 AM','6:00 AM'];
+const CAM_POSITIONS = [[0,1,2],[0,1,2,3],[1,2,3,4],[2,3,4],[3,4]];
+
+function initCats() {
+  return [
+    { name: 'Luna', imgIdx: 0, pos: 0, active: true, speed: 0.008 + Math.random()*0.006 },
+    { name: 'Luna', imgIdx: 1, pos: 0, active: true, speed: 0.006 + Math.random()*0.005 },
+    { name: 'Luna', imgIdx: 2, pos: 0, active: true, speed: 0.005 + Math.random()*0.004 }
+  ];
+}
+
+function startGame() {
+  document.getElementById('start-screen').style.display = 'none';
+  state.power = 100; state.hour = 0; state.leftDoor = false; state.rightDoor = false;
+  state.leftLight = false; state.rightLight = false; state.camsOpen = false;
+  state.ticks = 0; state.jumpscareActive = false; state.gameRunning = true;
+  state.cats = initCats();
+  updateUI();
+  state.intervals.forEach(clearInterval); state.intervals = [];
+  state.intervals.push(setInterval(gameTick, 100));
+  state.intervals.push(setInterval(moveCats, 2000));
+}
+
+function gameTick() {
+  if (!state.gameRunning) return;
+  state.ticks++;
+  let drain = 0.04;
+  if (state.leftDoor) drain += 0.04;
+  if (state.rightDoor) drain += 0.04;
+  if (state.leftLight) drain += 0.025;
+  if (state.rightLight) drain += 0.025;
+  if (state.camsOpen) drain += 0.03;
+  state.power = Math.max(0, state.power - drain);
+  state.hour = Math.min(6, Math.floor(state.ticks / 450));
+  if (state.power <= 0) { triggerPowerOut(); return; }
+  if (state.hour >= 6) { winGame(); return; }
+  updateUI();
+}
+
+function moveCats() {
+  if (!state.gameRunning) return;
+  state.cats.forEach((cat, i) => {
+    if (!cat.active) return;
+    const aggrBonus = state.hour * 0.04;
+    if (Math.random() < cat.speed + aggrBonus) cat.pos = Math.min(4, cat.pos + 1);
+    if (cat.pos >= 4) {
+      const side = i % 2 === 0 ? 'left' : 'right';
+      const doorClosed = side === 'left' ? state.leftDoor : state.rightDoor;
+      if (!doorClosed) triggerJumpscare(i);
+      else cat.pos = 2;
+    }
+  });
+  updateDoorWarnings();
+}
+
+function updateDoorWarnings() {
+  const atLeft = state.cats.some((c,i) => c.active && c.pos >= 4 && i % 2 === 0);
+  const atRight = state.cats.some((c,i) => c.active && c.pos >= 4 && i % 2 !== 0);
+  const warn = [];
+  if (atLeft && !state.leftDoor) warn.push('⚠ LUNA AT LEFT DOOR');
+  if (atRight && !state.rightDoor) warn.push('⚠ LUNA AT RIGHT DOOR');
+  document.getElementById('cat-at-door').textContent = warn.join('   ');
+}
+
+function triggerJumpscare(catIdx) {
+  if (state.jumpscareActive || !state.gameRunning) return;
+  state.jumpscareActive = true; state.gameRunning = false;
+  state.intervals.forEach(clearInterval);
+  const js = document.getElementById('jumpscare');
+  const jsImg = document.getElementById('js-img');
+  jsImg.src = base64Images[catIdx] || CAT_IMAGES[catIdx];
+  js.classList.add('active');
+  jsImg.style.filter = 'brightness(1.4) saturate(2) contrast(1.5)';
+  setTimeout(() => { js.classList.remove('active'); document.getElementById('gameover').classList.add('active'); }, 2200);
+}
+
+function triggerPowerOut() {
+  state.gameRunning = false; state.intervals.forEach(clearInterval);
+  setTimeout(() => triggerJumpscare(Math.floor(Math.random() * 3)), 1500);
+}
+
+function winGame() {
+  state.gameRunning = false; state.intervals.forEach(clearInterval);
+  document.getElementById('win-screen').classList.add('active');
+}
+
+function restartGame() {
+  document.getElementById('gameover').classList.remove('active');
+  document.getElementById('win-screen').classList.remove('active');
+  document.getElementById('jumpscare').classList.remove('active');
+  document.getElementById('cam-overlay').classList.remove('active');
+  state.camsOpen = false;
+  startGame();
+}
+
+function toggleDoor(side) {
+  if (!state.gameRunning) return;
+  if (side === 'left') state.leftDoor = !state.leftDoor;
+  else state.rightDoor = !state.rightDoor;
+  updateUI();
+}
+
+function toggleLight(side) {
+  if (!state.gameRunning) return;
+  if (side === 'left') state.leftLight = !state.leftLight;
+  else state.rightLight = !state.rightLight;
+  updateUI();
+}
+
+let currentCam = 0;
+function openCams() {
+  if (!state.gameRunning) return;
+  state.camsOpen = true;
+  document.getElementById('cam-overlay').classList.add('active');
+  updateCamView();
+}
+
+function closeCams() {
+  state.camsOpen = false;
+  document.getElementById('cam-overlay').classList.remove('active');
+}
+
+function selectCam(idx, btn) {
+  currentCam = idx;
+  document.querySelectorAll('.cam-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  updateCamView();
+}
+
+function updateCamView() {
+  const img = document.getElementById('cam-cat-img');
+  document.getElementById('cam-location').textContent = CAM_NAMES[currentCam];
+  const catsOnCam = state.cats.filter(c => CAM_POSITIONS[currentCam].includes(Math.min(4, c.pos)) && c.active);
+  if (catsOnCam.length > 0 && Math.random() > 0.3) {
+    const cat = catsOnCam[Math.floor(Math.random() * catsOnCam.length)];
+    img.src = base64Images[cat.imgIdx] || CAT_IMAGES[cat.imgIdx];
+    img.style.display = 'block';
+    img.style.filter = 'sepia(0.6) hue-rotate(80deg) brightness(0.6) contrast(1.2)';
+  } else {
+    img.style.display = 'none';
+  }
+}
+
+function updateUI() {
+  document.getElementById('time-display').textContent = HOURS[Math.min(state.hour, 6)];
+  const pct = Math.round(state.power);
+  document.getElementById('power-display').textContent = pct + '%';
+  document.getElementById('power-fill').style.width = pct + '%';
+  const fillEl = document.getElementById('power-fill');
+  if (pct > 50) fillEl.style.background = '#c8a050';
+  else if (pct > 25) fillEl.style.background = '#cc6600';
+  else fillEl.style.background = '#cc2020';
+
+  const ld = document.getElementById('left-door-btn');
+  const rd = document.getElementById('right-door-btn');
+  const ldv = document.getElementById('left-door-visual');
+  const rdv = document.getElementById('right-door-visual');
+  ld.textContent = state.leftDoor ? 'DOOR\n[CLOSED]' : 'DOOR\n[OPEN]';
+  rd.textContent = state.rightDoor ? 'DOOR\n[CLOSED]' : 'DOOR\n[OPEN]';
+  ld.className = 'door-btn' + (state.leftDoor ? ' closed' : '');
+  rd.className = 'door-btn' + (state.rightDoor ? ' closed' : '');
+  ldv.className = 'door-visual' + (state.leftDoor ? ' door-closed' : ' door-open');
+  ldv.textContent = state.leftDoor ? 'CLOSED' : 'OPEN';
+  rdv.className = 'door-visual' + (state.rightDoor ? ' door-closed' : ' door-open');
+  rdv.textContent = state.rightDoor ? 'CLOSED' : 'OPEN';
+
+  const ll = document.getElementById('left-light-btn');
+  const rl = document.getElementById('right-light-btn');
+  ll.className = 'light-btn' + (state.leftLight ? ' on' : '');
+  ll.textContent = state.leftLight ? 'LIGHT\n[ON]' : 'LIGHT\n[OFF]';
+  rl.className = 'light-btn' + (state.rightLight ? ' on' : '');
+  rl.textContent = state.rightLight ? 'LIGHT\n[ON]' : 'LIGHT\n[OFF]';
+  document.getElementById('light-glow-left').style.display = state.leftLight ? 'block' : 'none';
+  document.getElementById('light-glow-right').style.display = state.rightLight ? 'block' : 'none';
+}
+</script>
