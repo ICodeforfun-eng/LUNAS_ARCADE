@@ -33,7 +33,7 @@
     .footer-btn .btn-icon { font-size: 16px; }
     .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(4px); z-index: 1000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
     .modal-overlay.visible { opacity: 1; pointer-events: all; }
-    .modal { background: #0d0d0d; border: 1px solid #a855f7; border-radius: 16px; padding: 36px 40px; max-width: 520px; width: 90%; max-height: 80vh; overflow-y: auto; box-shadow: 0 0 40px rgba(168,85,247,0.3); transform: translateY(30px); transition: transform 0.4s ease; position: relative; }
+    .modal { background: #0d0d0d; border: 1px solid #a855f7; border-radius: 16px; padding: 36px 40px; max-width: 600px; width: 90%; max-height: 85vh; overflow-y: auto; box-shadow: 0 0 40px rgba(168,85,247,0.3); transform: translateY(30px); transition: transform 0.4s ease; position: relative; }
     .modal-overlay.visible .modal { transform: translateY(0); }
     .modal h3 { font-size: 18px; letter-spacing: 5px; color: #a855f7; text-shadow: 0 0 15px #7c3aed; margin-bottom: 6px; }
     .modal .modal-sub { font-size: 10px; color: #444; letter-spacing: 3px; margin-bottom: 28px; }
@@ -55,11 +55,12 @@
     .credit-icon { font-size: 26px; }
     .credit-name { font-size: 13px; color: #fff; letter-spacing: 2px; margin-bottom: 3px; }
     .credit-role { font-size: 10px; color: #555; letter-spacing: 2px; }
-    .luna-block { margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid #1a1a2e; }
+    .luna-block { margin-bottom: 28px; padding-bottom: 28px; border-bottom: 1px solid #1a1a2e; }
     .luna-block:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-    .luna-photo { width: 100%; border-radius: 10px; margin-bottom: 10px; border: 1px solid #2a1a4a; display: block; object-fit: cover; max-height: 260px; }
-    .luna-photo-placeholder { background: #111; border: 1px dashed #333; border-radius: 10px; padding: 40px; text-align: center; color: #444; font-size: 11px; letter-spacing: 2px; margin-bottom: 10px; }
-    .luna-caption { font-size: 10px; color: #555; letter-spacing: 2px; text-align: center; }
+    /* ── Bigger images ── */
+    .luna-photo { width: 100%; border-radius: 12px; margin-bottom: 10px; border: 2px solid #a855f7; display: block; object-fit: cover; max-height: 420px; box-shadow: 0 0 24px rgba(168,85,247,0.25); }
+    .luna-photo-placeholder { background: #111; border: 1px dashed #333; border-radius: 10px; padding: 60px 40px; text-align: center; color: #444; font-size: 11px; letter-spacing: 2px; margin-bottom: 10px; }
+    .luna-caption { font-size: 10px; color: #555; letter-spacing: 2px; text-align: center; margin-top: 6px; }
     .luna-label { font-size: 10px; color: #a855f7; letter-spacing: 3px; margin-bottom: 8px; }
     .luna-text { font-size: 13px; color: #bbb; letter-spacing: 1px; line-height: 1.8; }
     #reopen-btn { position: fixed; bottom: 24px; right: 24px; background: #0d0d0d; border: 1px solid #a855f7; color: #a855f7; font-family: monospace; font-size: 10px; letter-spacing: 2px; padding: 10px 16px; border-radius: 8px; cursor: pointer; z-index: 999; opacity: 0; pointer-events: none; transition: opacity 0.3s, box-shadow 0.2s; }
@@ -100,7 +101,6 @@
       <button class="close-modal" onclick="closeModal('update-modal')">✕</button>
       <h3>UPDATE LOG</h3>
       <p class="modal-sub">WHAT'S NEW IN THE ARCADE</p>
-      <!-- ✏️ EDIT YOUR UPDATE LOGS BELOW -->
       <div class="log-entry">
         <div class="log-version">VERSION 1.2.0</div>
         <div class="log-date">MAY 2025</div>
@@ -127,7 +127,6 @@
           <li>Started working on code</li>
         </ul>
       </div>
-      <!-- ✏️ END OF EDITABLE LOGS -->
     </div>
   </div>
 
@@ -137,7 +136,6 @@
       <button class="close-modal" onclick="closeModal('about-modal')">✕</button>
       <h3>ABOUT</h3>
       <p class="modal-sub">THE STORY OF LUNA'S ARCADE</p>
-      <!-- ✏️ EDIT YOUR ABOUT INFO BELOW -->
       <div class="about-block">
         <div class="about-label">WHAT IS THIS?</div>
         <div class="about-text">Luna's Arcade is a free online collection of games you can play right in your browser. No downloads, no installs — just click and play.</div>
@@ -150,7 +148,6 @@
         <div class="about-label">CONTACT</div>
         <div class="about-text">Have a suggestion or found a bug? Reach out at: youremail@email.com</div>
       </div>
-      <!-- ✏️ END OF EDITABLE ABOUT -->
     </div>
   </div>
 
@@ -160,7 +157,6 @@
       <button class="close-modal" onclick="closeModal('credits-modal')">✕</button>
       <h3>CREDITS</h3>
       <p class="modal-sub">THE PEOPLE BEHIND THE ARCADE</p>
-      <!-- ✏️ EDIT YOUR CREDITS BELOW -->
       <div class="credit-entry">
         <div class="credit-icon">👑</div>
         <div class="credit-info">
@@ -182,7 +178,6 @@
           <div class="credit-role">THANKS TO GN MATH FOR MOST OF GAMES</div>
         </div>
       </div>
-      <!-- ✏️ END OF EDITABLE CREDITS -->
     </div>
   </div>
 
@@ -195,9 +190,8 @@
 
       <!-- ✏️ EDIT LUNA'S PHOTOS & BIO BELOW -->
 
-      <!-- PHOTO 1: Upload your image to GitHub and change "images/IMG_0380.thumbnail.jpg" to your file path -->
       <div class="luna-block">
-        <img class="luna-photo" src="src="images/IMG_0380.thumbnail.jpg"" alt="Luna"
+        <img class="luna-photo" src="images/IMG_0380.thumbnail.jpg" alt="Luna"
           onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
         <div class="luna-photo-placeholder" style="display:none">
           📷 ADD PHOTO<br>
@@ -206,13 +200,11 @@
         <div class="luna-caption">PHOTO 01</div>
       </div>
 
-      <!-- BIO: Edit this text -->
       <div class="luna-block">
         <div class="luna-label">WHO IS LUNA?</div>
-        <div class="luna-text">Hey! This entire website is based off my cat Luna </div>
+        <div class="luna-text">Hey! This entire website is based off my cat Luna</div>
       </div>
 
-      <!-- PHOTO 2 (optional): Upload a second image -->
       <div class="luna-block">
         <img class="luna-photo" src="images/IMG_3234.thumbnail.jpg" alt="Luna 2"
           onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
@@ -223,10 +215,9 @@
         <div class="luna-caption">PHOTO 02</div>
       </div>
 
-      <!-- EXTRA INFO: Edit or delete this block -->
       <div class="luna-block">
         <div class="luna-label">FUN FACT</div>
-        <div class="luna-text">Luna is a fun cat and loves chasing mouse and plastic spiders around </div>
+        <div class="luna-text">Luna is a fun cat and loves chasing mouse and plastic spiders around</div>
       </div>
 
       <!-- ✏️ END OF EDITABLE LUNA SECTION -->
