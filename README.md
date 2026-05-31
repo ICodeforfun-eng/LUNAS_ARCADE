@@ -1,5 +1,5 @@
 # LUNAS_ARCADE
-This is a game website to get good games during school and when bored 
+This gaming website has loads of games to cure bordem. Enjoy this project
 
 
 VISIT THE OFFICAL WEBSITE
