@@ -117,11 +117,56 @@
     .game-btn.empty { cursor: default; opacity: 0.4; }
     .game-btn.empty:hover { border-color: #2a1a4a; transform: none; box-shadow: none; }
 
-    /* ── Update Log Popup ── */
-    #popup-overlay {
+    /* ── Footer ── */
+    #footer {
+      background: #000;
+      border-top: 1px solid #1a1a2e;
+      padding: 60px 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+    }
+    #footer p {
+      font-size: 11px;
+      color: #333;
+      letter-spacing: 3px;
+    }
+    .footer-btns {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .footer-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      background: #0d0d0d;
+      border: 1px solid #2a1a4a;
+      border-radius: 10px;
+      color: #ccc;
+      font-family: monospace;
+      font-size: 12px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: border-color 0.2s, box-shadow 0.2s, color 0.2s;
+      text-decoration: none;
+    }
+    .footer-btn:hover {
+      border-color: #a855f7;
+      color: #fff;
+      box-shadow: 0 0 18px rgba(168,85,247,0.3);
+    }
+    .footer-btn .btn-icon { font-size: 16px; }
+
+    /* ── Shared Popup styles ── */
+    .modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.75);
+      background: rgba(0,0,0,0.8);
       backdrop-filter: blur(4px);
       z-index: 1000;
       display: flex;
@@ -131,11 +176,11 @@
       pointer-events: none;
       transition: opacity 0.4s ease;
     }
-    #popup-overlay.visible {
+    .modal-overlay.visible {
       opacity: 1;
       pointer-events: all;
     }
-    #popup {
+    .modal {
       background: #0d0d0d;
       border: 1px solid #a855f7;
       border-radius: 16px;
@@ -149,63 +194,23 @@
       transition: transform 0.4s ease;
       position: relative;
     }
-    #popup-overlay.visible #popup {
+    .modal-overlay.visible .modal {
       transform: translateY(0);
     }
-    #popup h3 {
+    .modal h3 {
       font-size: 18px;
       letter-spacing: 5px;
       color: #a855f7;
       text-shadow: 0 0 15px #7c3aed;
       margin-bottom: 6px;
     }
-    #popup .popup-sub {
+    .modal .modal-sub {
       font-size: 10px;
       color: #444;
       letter-spacing: 3px;
       margin-bottom: 28px;
     }
-    .log-entry {
-      margin-bottom: 24px;
-      padding-bottom: 24px;
-      border-bottom: 1px solid #1a1a2e;
-    }
-    .log-entry:last-child {
-      border-bottom: none;
-      margin-bottom: 0;
-      padding-bottom: 0;
-    }
-    .log-version {
-      font-size: 11px;
-      color: #a855f7;
-      letter-spacing: 3px;
-      margin-bottom: 4px;
-    }
-    .log-date {
-      font-size: 10px;
-      color: #444;
-      letter-spacing: 2px;
-      margin-bottom: 10px;
-    }
-    .log-changes {
-      list-style: none;
-      padding: 0;
-    }
-    .log-changes li {
-      font-size: 12px;
-      color: #bbb;
-      letter-spacing: 1px;
-      padding: 4px 0;
-      padding-left: 16px;
-      position: relative;
-    }
-    .log-changes li::before {
-      content: '▸';
-      position: absolute;
-      left: 0;
-      color: #7c3aed;
-    }
-    #close-popup {
+    .close-modal {
       position: absolute;
       top: 16px;
       right: 20px;
@@ -217,7 +222,50 @@
       font-family: monospace;
       transition: color 0.2s;
     }
-    #close-popup:hover { color: #a855f7; }
+    .close-modal:hover { color: #a855f7; }
+
+    /* ── Update Log styles ── */
+    .log-entry {
+      margin-bottom: 24px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid #1a1a2e;
+    }
+    .log-entry:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+    .log-version { font-size: 11px; color: #a855f7; letter-spacing: 3px; margin-bottom: 4px; }
+    .log-date { font-size: 10px; color: #444; letter-spacing: 2px; margin-bottom: 10px; }
+    .log-changes { list-style: none; padding: 0; }
+    .log-changes li {
+      font-size: 12px; color: #bbb; letter-spacing: 1px;
+      padding: 4px 0 4px 16px; position: relative;
+    }
+    .log-changes li::before { content: '▸'; position: absolute; left: 0; color: #7c3aed; }
+
+    /* ── About styles ── */
+    .about-block {
+      margin-bottom: 24px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid #1a1a2e;
+    }
+    .about-block:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+    .about-label { font-size: 10px; color: #a855f7; letter-spacing: 3px; margin-bottom: 8px; }
+    .about-text { font-size: 13px; color: #bbb; letter-spacing: 1px; line-height: 1.8; }
+
+    /* ── Credits styles ── */
+    .credit-entry {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #1a1a2e;
+    }
+    .credit-entry:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+    .credit-icon { font-size: 26px; }
+    .credit-info {}
+    .credit-name { font-size: 13px; color: #fff; letter-spacing: 2px; margin-bottom: 3px; }
+    .credit-role { font-size: 10px; color: #555; letter-spacing: 2px; }
+
+    /* ── Reopen update log button ── */
     #reopen-btn {
       position: fixed;
       bottom: 24px;
@@ -236,13 +284,8 @@
       pointer-events: none;
       transition: opacity 0.3s, box-shadow 0.2s;
     }
-    #reopen-btn.visible {
-      opacity: 1;
-      pointer-events: all;
-    }
-    #reopen-btn:hover {
-      box-shadow: 0 0 14px rgba(168,85,247,0.4);
-    }
+    #reopen-btn.visible { opacity: 1; pointer-events: all; }
+    #reopen-btn:hover { box-shadow: 0 0 14px rgba(168,85,247,0.4); }
   </style>
 </head>
 <body>
@@ -262,15 +305,28 @@
     <div class="grid" id="gameGrid"></div>
   </section>
 
-  <!-- Update Log Popup -->
-  <div id="popup-overlay">
-    <div id="popup">
-      <button id="close-popup">✕</button>
+  <!-- ── Footer ── -->
+  <footer id="footer">
+    <p>LUNA'S ARCADE — EST. 2025</p>
+    <div class="footer-btns">
+      <button class="footer-btn" onclick="openModal('about-modal')">
+        <span class="btn-icon">🕹️</span> About
+      </button>
+      <button class="footer-btn" onclick="openModal('credits-modal')">
+        <span class="btn-icon">⭐</span> Credits
+      </button>
+    </div>
+    <p style="font-size:10px;color:#222;letter-spacing:2px;">© 2025 LUNA'S ARCADE. ALL RIGHTS RESERVED.</p>
+  </footer>
+
+  <!-- ── Update Log Modal ── -->
+  <div class="modal-overlay" id="update-modal">
+    <div class="modal">
+      <button class="close-modal" onclick="closeModal('update-modal')">✕</button>
       <h3>UPDATE LOG</h3>
-      <p class="popup-sub">WHAT'S NEW IN THE ARCADE</p>
+      <p class="modal-sub">WHAT'S NEW IN THE ARCADE</p>
 
-      <!-- ✏️ EDIT YOUR UPDATE LOGS BELOW — copy a log-entry block to add more -->
-
+      <!-- ✏️ EDIT YOUR UPDATE LOGS BELOW -->
       <div class="log-entry">
         <div class="log-version">VERSION 1.2.0</div>
         <div class="log-date">MAY 2025</div>
@@ -280,7 +336,6 @@
           <li>Mouse trail added to hero section</li>
         </ul>
       </div>
-
       <div class="log-entry">
         <div class="log-version">VERSION 1.1.0</div>
         <div class="log-date">MAY 2025</div>
@@ -290,22 +345,76 @@
           <li>Mobile responsive layout</li>
         </ul>
       </div>
-
       <div class="log-entry">
         <div class="log-version">VERSION 1.0.0</div>
         <div class="log-date">APRIL 2025</div>
         <ul class="log-changes">
           <li>Initial site created</li>
-          <li>started working on code</li>
+          <li>Started working on code</li>
         </ul>
       </div>
-
       <!-- ✏️ END OF EDITABLE LOGS -->
-
     </div>
   </div>
 
-  <!-- Reopen button (shows after popup is closed) -->
+  <!-- ── About Modal ── -->
+  <div class="modal-overlay" id="about-modal">
+    <div class="modal">
+      <button class="close-modal" onclick="closeModal('about-modal')">✕</button>
+      <h3>ABOUT</h3>
+      <p class="modal-sub">THE STORY OF LUNA'S ARCADE</p>
+
+      <!-- ✏️ EDIT YOUR ABOUT INFO BELOW -->
+      <div class="about-block">
+        <div class="about-label">WHAT IS THIS?</div>
+        <div class="about-text">Luna's Arcade is a free online collection of games you can play right in your browser. No downloads, no installs — just click and play.</div>
+      </div>
+      <div class="about-block">
+        <div class="about-label">WHO MADE IT?</div>
+        <div class="about-text">Built and maintained by Luna. Started as a fun project and grew into a full arcade experience.</div>
+      </div>
+      <div class="about-block">
+        <div class="about-label">CONTACT</div>
+        <div class="about-text">Have a suggestion or found a bug? Reach out at: youremail@email.com</div>
+      </div>
+      <!-- ✏️ END OF EDITABLE ABOUT -->
+    </div>
+  </div>
+
+  <!-- ── Credits Modal ── -->
+  <div class="modal-overlay" id="credits-modal">
+    <div class="modal">
+      <button class="close-modal" onclick="closeModal('credits-modal')">✕</button>
+      <h3>CREDITS</h3>
+      <p class="modal-sub">THE PEOPLE BEHIND THE ARCADE</p>
+
+      <!-- ✏️ EDIT YOUR CREDITS BELOW -->
+      <div class="credit-entry">
+        <div class="credit-icon">👑</div>
+        <div class="credit-info">
+          <div class="credit-name">LUNA</div>
+          <div class="credit-role">FOUNDER & DEVELOPER</div>
+        </div>
+      </div>
+      <div class="credit-entry">
+        <div class="credit-icon">🎮</div>
+        <div class="credit-info">
+          <div class="credit-name">GAME DEVS</div>
+          <div class="credit-role">ORIGINAL CREATORS OF HOSTED GAMES</div>
+        </div>
+      </div>
+      <div class="credit-entry">
+        <div class="credit-icon">💜</div>
+        <div class="credit-info">
+          <div class="credit-name">THE PLAYERS</div>
+          <div class="credit-role">THANKS FOR PLAYING!</div>
+        </div>
+      </div>
+      <!-- ✏️ END OF EDITABLE CREDITS -->
+    </div>
+  </div>
+
+  <!-- Reopen update log button -->
   <button id="reopen-btn">📋 UPDATE LOG</button>
 
   <script>
@@ -394,36 +503,36 @@
 
     // ── Game buttons ──
     const games = [
-      { name: 'clover pit',  icon: '🎮', link: 'games/game1.html' },
-      { name: 'OVO',  icon: '👾', link: 'games/game2.html' },
-      { name: 'FNAF 1',  icon: '🕹️', link: 'games/game3.html' },
-      { name: 'FNAF 2',  icon: '🚀', link: 'games/game4.html' },
+      { name: 'Clover Pit',  icon: '🎮', link: 'games/game1.html' },
+      { name: 'OVO',         icon: '👾', link: 'games/game2.html' },
+      { name: 'FNAF 1',      icon: '🕹️', link: 'games/game3.html' },
+      { name: 'FNAF 2',      icon: '🚀', link: 'games/game4.html' },
       { name: 'Soundboard',  icon: '🏆', link: 'games/game5.html' },
-      { name: 'Bad time sim',  icon: '⚡', link: 'games/game6.html' },
-      { name: 'Baldi basics',  icon: '🔥', link: 'games/game7.html' },
-      { name: 'Game 8',  icon: '💎', link: 'games/game8.html' },
-      { name: 'Game 9',  icon: '🌟', link: 'games/game9.html' },
-      { name: 'Game 10', icon: '🎯', link: 'games/game10.html' },
-      { name: 'Game 11', icon: '🃏', link: 'games/game11.html' },
-      { name: 'Game 12', icon: '🎲', link: 'games/game12.html' },
-      { name: 'Game 13', icon: '🐉', link: 'games/game13.html' },
-      { name: 'Game 14', icon: '🤖', link: 'games/game14.html' },
-      { name: 'Game 15', icon: '🌀', link: 'games/game15.html' },
-      { name: 'Game 16', icon: '🎵', link: 'games/game16.html' },
-      { name: 'Game 17', icon: '🧩', link: 'games/game17.html' },
-      { name: 'Game 18', icon: '🏹', link: 'games/game18.html' },
-      { name: 'Game 19', icon: '🌊', link: 'games/game19.html' },
-      { name: 'Game 20', icon: '💥', link: 'games/game20.html' },
-      { name: 'Game 21', icon: '🦊', link: 'games/game21.html' },
-      { name: 'Game 22', icon: '🛸', link: 'games/game22.html' },
-      { name: 'Game 23', icon: '⚔️', link: 'games/game23.html' },
-      { name: 'Game 24', icon: '🧲', link: 'games/game24.html' },
-      { name: 'Game 25', icon: '🎪', link: 'games/game25.html' },
-      { name: 'Game 26', icon: '🔮', link: 'games/game26.html' },
-      { name: 'Game 27', icon: '🏰', link: 'games/game27.html' },
-      { name: 'Game 28', icon: '🦋', link: 'games/game28.html' },
-      { name: 'Game 29', icon: '🌙', link: 'games/game29.html' },
-      { name: 'Game 30', icon: '👑', link: 'games/game30.html' },
+      { name: 'Bad Time Sim',icon: '⚡', link: 'games/game6.html' },
+      { name: 'Baldi Basics',icon: '🔥', link: 'games/game7.html' },
+      { name: 'Game 8',      icon: '💎', link: 'games/game8.html' },
+      { name: 'Game 9',      icon: '🌟', link: 'games/game9.html' },
+      { name: 'Game 10',     icon: '🎯', link: 'games/game10.html' },
+      { name: 'Game 11',     icon: '🃏', link: 'games/game11.html' },
+      { name: 'Game 12',     icon: '🎲', link: 'games/game12.html' },
+      { name: 'Game 13',     icon: '🐉', link: 'games/game13.html' },
+      { name: 'Game 14',     icon: '🤖', link: 'games/game14.html' },
+      { name: 'Game 15',     icon: '🌀', link: 'games/game15.html' },
+      { name: 'Game 16',     icon: '🎵', link: 'games/game16.html' },
+      { name: 'Game 17',     icon: '🧩', link: 'games/game17.html' },
+      { name: 'Game 18',     icon: '🏹', link: 'games/game18.html' },
+      { name: 'Game 19',     icon: '🌊', link: 'games/game19.html' },
+      { name: 'Game 20',     icon: '💥', link: 'games/game20.html' },
+      { name: 'Game 21',     icon: '🦊', link: 'games/game21.html' },
+      { name: 'Game 22',     icon: '🛸', link: 'games/game22.html' },
+      { name: 'Game 23',     icon: '⚔️', link: 'games/game23.html' },
+      { name: 'Game 24',     icon: '🧲', link: 'games/game24.html' },
+      { name: 'Game 25',     icon: '🎪', link: 'games/game25.html' },
+      { name: 'Game 26',     icon: '🔮', link: 'games/game26.html' },
+      { name: 'Game 27',     icon: '🏰', link: 'games/game27.html' },
+      { name: 'Game 28',     icon: '🦋', link: 'games/game28.html' },
+      { name: 'Game 29',     icon: '🌙', link: 'games/game29.html' },
+      { name: 'Game 30',     icon: '👑', link: 'games/game30.html' },
     ];
 
     const grid = document.getElementById('gameGrid');
@@ -439,35 +548,38 @@
       grid.appendChild(a);
     });
 
-    // ── Update Log Popup ──
-    const popupOverlay = document.getElementById('popup-overlay');
-    const closeBtn = document.getElementById('close-popup');
+    // ── Modal system ──
+    function openModal(id) {
+      document.getElementById(id).classList.add('visible');
+    }
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('visible');
+    }
+
+    // Close modal when clicking outside
+    document.querySelectorAll('.modal-overlay').forEach(overlay => {
+      overlay.addEventListener('click', e => {
+        if (e.target === overlay) overlay.classList.remove('visible');
+      });
+    });
+
+    // ── Update Log scroll trigger ──
     const reopenBtn = document.getElementById('reopen-btn');
     let popupShown = false;
 
-    function showPopup() {
-      popupOverlay.classList.add('visible');
-      reopenBtn.classList.remove('visible');
-    }
-    function hidePopup() {
-      popupOverlay.classList.remove('visible');
-      reopenBtn.classList.add('visible');
-    }
-
-    // Show popup when user scrolls past the hero
     window.addEventListener('scroll', () => {
       if (!popupShown && window.scrollY > window.innerHeight * 0.4) {
         popupShown = true;
-        showPopup();
+        openModal('update-modal');
+        reopenBtn.classList.add('visible');
       }
     });
 
-    closeBtn.addEventListener('click', hidePopup);
-    reopenBtn.addEventListener('click', showPopup);
+    reopenBtn.addEventListener('click', () => openModal('update-modal'));
 
-    // Close if clicking outside the popup box
-    popupOverlay.addEventListener('click', e => {
-      if (e.target === popupOverlay) hidePopup();
+    // Hide reopen btn when update modal opens, show when closed
+    document.querySelector('#update-modal .close-modal').addEventListener('click', () => {
+      reopenBtn.classList.add('visible');
     });
   </script>
 </body>
