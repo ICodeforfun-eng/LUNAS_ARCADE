@@ -6,40 +6,59 @@
 body{background:#000;display:flex;align-items:center;justify-content:center;min-height:100vh}
 #game{font-family:'Courier New',monospace;background:#0a0a0a;color:#c8a050;width:700px;height:600px;position:relative;overflow:hidden;user-select:none}
 #office{width:100%;height:600px;position:relative;background:radial-gradient(ellipse at center,#1a1008 0%,#0a0600 60%,#000 100%)}
-.wall{position:absolute;top:0;bottom:0;width:140px;background:linear-gradient(to right,#0d0a05,#1a1208);border:1px solid #2a1f05;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;z-index:2}
+
+.wall{position:absolute;top:0;bottom:0;width:140px;background:linear-gradient(to right,#0d0a05,#1a1208);border:1px solid #2a1f05;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;z-index:3}
 #left-wall{left:0}#right-wall{right:0}
+
 .door-btn{width:110px;padding:10px 0;background:#1a1005;border:2px solid #c8a050;color:#c8a050;font-family:'Courier New',monospace;font-size:12px;cursor:pointer;letter-spacing:1px;transition:all .2s}
 .door-btn:hover{background:#2a2010}.door-btn.closed{background:#3a2a05;border-color:#ff6600;color:#ff6600}
 .light-btn{width:110px;padding:8px 0;background:#0a0a05;border:1px solid #888;color:#aaa;font-family:'Courier New',monospace;font-size:11px;cursor:pointer;letter-spacing:1px}
 .light-btn.on{background:#2a2a10;border-color:#ffee44;color:#ffee44}
-.door-visual{width:90px;height:160px;background:#111;border:2px solid #333;transition:all .3s;display:flex;align-items:center;justify-content:center;font-size:10px;color:#444;position:relative;overflow:hidden}
-.door-visual.door-open{background:#0a0000;border-color:#1a0000}.door-visual.door-closed{background:#2a1a00;border-color:#c8a050;color:#c8a050}
-.door-label{position:relative;z-index:2;font-size:10px;text-shadow:0 0 4px #000}
 
-/* Cat peek images inside door frames */
-.door-peek{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 0.15s;z-index:1;filter:brightness(0.35) saturate(1.2)}
+.door-visual{width:90px;height:160px;background:#111;border:2px solid #333;transition:all .3s;display:flex;align-items:center;justify-content:center;font-size:10px;color:#444;position:relative;overflow:hidden}
+.door-visual.door-open{background:#0a0000;border-color:#1a0000}
+.door-visual.door-closed{background:#2a1a00;border-color:#c8a050;color:#c8a050}
+.door-label{position:relative;z-index:2;font-size:10px;text-shadow:0 0 6px #000;pointer-events:none}
+.door-peek{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 0.2s;z-index:1;filter:brightness(0.4) saturate(1.3)}
 .door-peek.visible{opacity:1}
 
-/* Light glow overlays */
 #light-glow-left{position:absolute;left:140px;top:0;bottom:0;width:120px;background:linear-gradient(to right,rgba(255,220,80,0.22),transparent);pointer-events:none;display:none;z-index:1}
 #light-glow-right{position:absolute;right:140px;top:0;bottom:0;width:120px;background:linear-gradient(to left,rgba(255,220,80,0.22),transparent);pointer-events:none;display:none;z-index:1}
 
-#center{position:absolute;left:140px;right:140px;top:0;bottom:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:1}
-#desk{position:absolute;bottom:60px;left:50%;transform:translateX(-50%);width:260px;height:55px;background:#1a1005;border:2px solid #3a2a10;border-radius:4px;display:flex;align-items:center;justify-content:center}
-#cam-btn{padding:10px 24px;background:#0a0a00;border:2px solid #c8a050;color:#c8a050;font-family:'Courier New',monospace;font-size:13px;cursor:pointer;letter-spacing:2px}
-#power-display{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);font-size:13px;color:#c8a050;letter-spacing:1px}
-#time-display{position:absolute;top:15px;left:50%;transform:translateX(-50%);font-size:20px;color:#c8a050;letter-spacing:3px;font-weight:bold}
-#night-display{position:absolute;top:45px;left:50%;transform:translateX(-50%);font-size:12px;color:#806030;letter-spacing:2px}
+/* Center panel - pointer-events:none so it never blocks clicks */
+#center{position:absolute;left:140px;right:140px;top:0;height:520px;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:1;pointer-events:none}
 
-#cam-overlay{display:none;position:absolute;top:0;left:0;width:100%;height:100%;background:#050a05;z-index:10;flex-direction:column}
+/* Desk sits above center, has pointer-events */
+#desk{position:absolute;bottom:0;left:140px;right:140px;height:80px;background:linear-gradient(to top,#1a1005,#0d0a03);border-top:2px solid #3a2a10;display:flex;align-items:center;justify-content:center;z-index:4}
+#cam-btn{padding:12px 32px;background:#0a0a00;border:2px solid #c8a050;color:#c8a050;font-family:'Courier New',monospace;font-size:14px;cursor:pointer;letter-spacing:2px;position:relative;z-index:5}
+#cam-btn:hover{background:#1a1a00}
+
+#power-display{position:absolute;bottom:28px;right:160px;font-size:12px;color:#c8a050;letter-spacing:1px;z-index:5}
+#time-display{position:absolute;top:15px;left:50%;transform:translateX(-50%);font-size:20px;color:#c8a050;letter-spacing:3px;font-weight:bold;pointer-events:none}
+#night-display{position:absolute;top:45px;left:50%;transform:translateX(-50%);font-size:12px;color:#806030;letter-spacing:2px;pointer-events:none}
+
+#power-bar-wrap{position:absolute;bottom:28px;left:160px;width:110px;z-index:5}
+#power-bar-wrap label{font-size:10px;color:#806030;display:block;margin-bottom:3px;letter-spacing:1px}
+#power-bar{height:8px;background:#111;border:1px solid #333}
+#power-fill{height:100%;background:#c8a050;transition:width .5s}
+
+#cat-at-door{position:absolute;font-size:11px;color:#ff3333;letter-spacing:1px;top:10px;text-align:center;left:0;right:0;pointer-events:none;z-index:5}
+
+.shadow-left{position:absolute;left:140px;top:0;bottom:0;width:50px;background:linear-gradient(to right,#000,transparent);pointer-events:none;z-index:2}
+.shadow-right{position:absolute;right:140px;top:0;bottom:0;width:50px;background:linear-gradient(to left,#000,transparent);pointer-events:none;z-index:2}
+
+/* Camera overlay */
+#cam-overlay{display:none;position:absolute;top:0;left:0;width:100%;height:100%;background:#050a05;z-index:20;flex-direction:column}
 #cam-overlay.active{display:flex}
 #cam-header{display:flex;justify-content:space-between;align-items:center;padding:10px 20px;border-bottom:1px solid #0a2a0a;background:#030803}
 #cam-title{font-size:14px;color:#30ff30;letter-spacing:2px}
 #cam-close{padding:6px 16px;background:#0a1a0a;border:1px solid #30ff30;color:#30ff30;font-family:'Courier New',monospace;font-size:11px;cursor:pointer}
+#cam-close:hover{background:#142014}
 #cam-feed{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px}
-#cam-view{width:100%;max-width:500px;height:280px;background:#030f03;border:1px solid #0a3a0a;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+#cam-view{width:100%;max-width:500px;height:260px;background:#030f03;border:1px solid #0a3a0a;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
 .cam-noise{position:absolute;top:0;left:0;width:100%;height:100%;opacity:.05;background-image:repeating-linear-gradient(0deg,transparent,transparent 2px,#0f0 2px,#0f0 3px);pointer-events:none}
-#cam-img{max-height:260px;max-width:100%;object-fit:contain;display:none}
+#cam-img{max-height:240px;max-width:100%;object-fit:contain;display:none}
+#cam-empty{color:#0a3a0a;font-size:12px;letter-spacing:2px}
 #cam-location{position:absolute;top:8px;left:8px;font-size:11px;color:#20cc20;letter-spacing:1px}
 #cam-status{position:absolute;bottom:8px;right:8px;font-size:10px;color:#20cc20}
 .cam-select{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:12px}
@@ -47,38 +66,27 @@ body{background:#000;display:flex;align-items:center;justify-content:center;min-
 .cam-tab:hover,.cam-tab.active{background:#0a1a0a;border-color:#30ff30}
 #cam-power-note{font-size:10px;color:#0a6a0a;margin-top:8px}
 
+/* Fullscreen overlays */
 #jumpscare{display:none;position:absolute;top:0;left:0;width:100%;height:100%;background:#000;z-index:50;align-items:center;justify-content:center}
 #jumpscare.active{display:flex}
 #js-img{width:100%;height:100%;object-fit:cover}
-
 #powerout{display:none;position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.97);z-index:40;flex-direction:column;align-items:center;justify-content:center;gap:14px}
 #powerout.active{display:flex}
 #po-text{font-size:22px;color:#cc2020;letter-spacing:3px;animation:flicker .3s infinite}
 #po-sub{font-size:12px;color:#662020;letter-spacing:2px}
-
 #gameover{display:none;position:absolute;top:0;left:0;width:100%;height:100%;background:#000;z-index:60;flex-direction:column;align-items:center;justify-content:center;gap:20px}
 #gameover.active{display:flex}
 #go-text{font-size:32px;color:#cc2020;letter-spacing:4px;animation:flicker .5s infinite}
 @keyframes flicker{0%,100%{opacity:1}50%{opacity:.5}}
 #go-sub{font-size:14px;color:#883020;letter-spacing:2px}
 .restart-btn{padding:12px 32px;background:#1a0000;border:2px solid #cc2020;color:#cc2020;font-family:'Courier New',monospace;font-size:14px;cursor:pointer;letter-spacing:2px;margin-top:10px}
-
 #win-screen{display:none;position:absolute;top:0;left:0;width:100%;height:100%;background:#000;z-index:60;flex-direction:column;align-items:center;justify-content:center;gap:16px}
 #win-screen.active{display:flex}
 #win-text{font-size:28px;color:#c8a050;letter-spacing:3px}
 #win-sub{font-size:13px;color:#806030;letter-spacing:2px}
-
-.shadow-left{position:absolute;left:140px;top:0;bottom:0;width:60px;background:linear-gradient(to right,#000,transparent);pointer-events:none;z-index:1}
-.shadow-right{position:absolute;right:140px;top:0;bottom:0;width:60px;background:linear-gradient(to left,#000,transparent);pointer-events:none;z-index:1}
-#power-bar-wrap{position:absolute;bottom:10px;left:20px;width:120px}
-#power-bar-wrap label{font-size:10px;color:#806030;display:block;margin-bottom:3px;letter-spacing:1px}
-#power-bar{height:8px;background:#111;border:1px solid #333}
-#power-fill{height:100%;background:#c8a050;transition:width .5s}
-
-#cat-at-door{position:absolute;font-size:11px;color:#ff3333;letter-spacing:1px;top:10px;text-align:center}
 #start-screen{position:absolute;top:0;left:0;width:100%;height:100%;background:#000;z-index:70;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px}
 #start-title{font-size:26px;color:#c8a050;letter-spacing:4px;text-align:center;line-height:1.3}
-#start-sub{font-size:12px;color:#806030;letter-spacing:2px;text-align:center;max-width:320px;line-height:1.8}
+#start-sub{font-size:12px;color:#806030;letter-spacing:2px;text-align:center;max-width:340px;line-height:1.8}
 #start-btn{padding:12px 36px;background:#1a1005;border:2px solid #c8a050;color:#c8a050;font-family:'Courier New',monospace;font-size:15px;cursor:pointer;letter-spacing:3px}
 #start-btn:hover{background:#2a2010}
 </style>
@@ -87,9 +95,10 @@ body{background:#000;display:flex;align-items:center;justify-content:center;min-
 <div id="game">
   <div id="start-screen">
     <div id="start-title">FIVE NIGHTS<br>AT LUNA'S</div>
-    <div id="start-sub">Survive from 12AM to 6AM.<br>Use the LIGHTS to peek outside the doors.<br>Close the door fast if you see Luna!</div>
+    <div id="start-sub">Survive 12AM to 6AM.<br>Use LIGHTS to peek outside the doors.<br>If you see Luna — close the door fast!<br>Don't run out of power.</div>
     <button id="start-btn" onclick="startGame()">START NIGHT</button>
   </div>
+
   <div id="office">
     <div id="left-wall" class="wall">
       <div id="left-door-visual" class="door-visual door-open">
@@ -107,16 +116,27 @@ body{background:#000;display:flex;align-items:center;justify-content:center;min-
       <button class="door-btn" id="right-door-btn" onclick="toggleDoor('right')">DOOR<br>[OPEN]</button>
       <button class="light-btn" id="right-light-btn" onclick="toggleLight('right')">LIGHT<br>[OFF]</button>
     </div>
-    <div id="light-glow-left"></div><div id="light-glow-right"></div>
-    <div class="shadow-left"></div><div class="shadow-right"></div>
+
+    <div id="light-glow-left"></div>
+    <div id="light-glow-right"></div>
+    <div class="shadow-left"></div>
+    <div class="shadow-right"></div>
+
     <div id="center">
       <div id="time-display">12:00 AM</div>
       <div id="night-display">NIGHT 1</div>
       <div id="cat-at-door"></div>
-      <div style="font-size:11px;color:#403010;letter-spacing:1px;text-align:center;padding:0 20px">MONITOR CAMERAS<br>USE LIGHTS TO CHECK DOORS</div>
+      <div style="font-size:11px;color:#403010;letter-spacing:1px;text-align:center;padding:0 30px;margin-top:20px">USE LIGHTS TO PEEK OUTSIDE DOORS<br>CLOSE THE DOOR IF YOU SEE LUNA</div>
     </div>
-    <div id="desk"><button id="cam-btn" onclick="openCams()">[ CAMERAS ]</button></div>
-    <div id="power-bar-wrap"><label>POWER</label><div id="power-bar"><div id="power-fill" style="width:100%"></div></div></div>
+
+    <div id="desk">
+      <button id="cam-btn" onclick="openCams()">[ CAMERAS ]</button>
+    </div>
+
+    <div id="power-bar-wrap">
+      <label>POWER</label>
+      <div id="power-bar"><div id="power-fill" style="width:100%"></div></div>
+    </div>
     <div id="power-display">100%</div>
   </div>
 
@@ -129,6 +149,7 @@ body{background:#000;display:flex;align-items:center;justify-content:center;min-
       <div id="cam-view">
         <div class="cam-noise"></div>
         <img id="cam-img" src="" alt="">
+        <div id="cam-empty">NO SIGNAL</div>
         <div id="cam-location">CAM 1A — LOBBY</div>
         <div id="cam-status">&#9679; REC</div>
       </div>
@@ -139,7 +160,7 @@ body{background:#000;display:flex;align-items:center;justify-content:center;min-
         <button class="cam-tab" onclick="selectCam(3,this)">CAM 4D<br>L-DOOR</button>
         <button class="cam-tab" onclick="selectCam(4,this)">CAM 5E<br>R-DOOR</button>
       </div>
-      <div id="cam-power-note">Cameras drain power while active</div>
+      <div id="cam-power-note">&#9888; Cameras drain power while active</div>
     </div>
   </div>
 
@@ -181,7 +202,7 @@ function startGame(){
   S.ivs.forEach(clearInterval);S.ivs=[];
   S.ivs.push(setInterval(tick,100));
   S.ivs.push(setInterval(moveCats,2000));
-  ui();
+  updatePeeks();ui();
 }
 
 function tick(){
@@ -207,33 +228,20 @@ function moveCats(){
       if(!cl)jumpscare(i);else c.pos=2;
     }
   });
-  updatePeeks();
-  doorWarn();
+  updatePeeks();doorWarn();
 }
 
-// Show cat photo in the door window when light is on and cat is at door
 function updatePeeks(){
   const leftCat=S.cats.find((c,i)=>i%2===0&&c.pos>=4);
   const rightCat=S.cats.find((c,i)=>i%2!==0&&c.pos>=4);
-
   const lp=document.getElementById('left-peek');
   const rp=document.getElementById('right-peek');
-
-  // Left door peek - only show if light is ON and door is OPEN
   if(leftCat&&S.lL&&!S.lD){
-    lp.src=CAT_IMAGES[leftCat.i];
-    lp.classList.add('visible');
-  } else {
-    lp.classList.remove('visible');
-  }
-
-  // Right door peek - only show if light is ON and door is OPEN
+    lp.src=CAT_IMAGES[leftCat.i];lp.classList.add('visible');
+  }else{lp.classList.remove('visible');}
   if(rightCat&&S.rL&&!S.rD){
-    rp.src=CAT_IMAGES[rightCat.i];
-    rp.classList.add('visible');
-  } else {
-    rp.classList.remove('visible');
-  }
+    rp.src=CAT_IMAGES[rightCat.i];rp.classList.add('visible');
+  }else{rp.classList.remove('visible');}
 }
 
 function doorWarn(){
@@ -246,7 +254,6 @@ function doorWarn(){
 function powerOut(){
   S.po=true;S.run=false;S.ivs.forEach(clearInterval);
   closeCams();
-  // Hide peeks
   document.getElementById('left-peek').classList.remove('visible');
   document.getElementById('right-peek').classList.remove('visible');
   document.getElementById('powerout').classList.add('active');
@@ -300,18 +307,37 @@ function toggleLight(side){
 }
 
 let curCam=0;
-function openCams(){if(!S.run)return;S.cams=true;document.getElementById('cam-overlay').classList.add('active');camView();}
-function closeCams(){S.cams=false;document.getElementById('cam-overlay').classList.remove('active');}
-function selectCam(i,btn){curCam=i;document.querySelectorAll('.cam-tab').forEach(t=>t.classList.remove('active'));btn.classList.add('active');camView();}
+function openCams(){
+  if(!S.run)return;
+  S.cams=true;
+  document.getElementById('cam-overlay').classList.add('active');
+  camView();
+}
+function closeCams(){
+  S.cams=false;
+  document.getElementById('cam-overlay').classList.remove('active');
+}
+function selectCam(i,btn){
+  curCam=i;
+  document.querySelectorAll('.cam-tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  camView();
+}
 function camView(){
   const img=document.getElementById('cam-img');
+  const empty=document.getElementById('cam-empty');
   document.getElementById('cam-location').textContent=CAM_NAMES[curCam];
   const vis=S.cats.filter(c=>CAM_POS[curCam].includes(Math.min(4,c.pos)));
   if(vis.length>0&&Math.random()>.3){
     const c=vis[Math.floor(Math.random()*vis.length)];
     img.src=CAT_IMAGES[c.i];
-    img.style.cssText='max-height:260px;max-width:100%;object-fit:contain;display:block;filter:sepia(.7)hue-rotate(80deg)brightness(.5)contrast(1.4)';
-  }else{img.style.display='none';img.src='';}
+    img.style.cssText='max-height:240px;max-width:100%;object-fit:contain;display:block;filter:sepia(.7)hue-rotate(80deg)brightness(.5)contrast(1.4)';
+    empty.style.display='none';
+  }else{
+    img.style.display='none';
+    img.src='';
+    empty.style.display='block';
+  }
 }
 
 function ui(){
@@ -321,9 +347,9 @@ function ui(){
   document.getElementById('power-fill').style.width=p+'%';
   document.getElementById('power-fill').style.background=p>50?'#c8a050':p>25?'#cc6600':'#cc2020';
 
-  const ld=document.getElementById('left-door-btn'),rd=document.getElementById('right-door-btn');
   const ldv=document.getElementById('left-door-visual'),rdv=document.getElementById('right-door-visual');
   const ldl=ldv.querySelector('.door-label'),rdl=rdv.querySelector('.door-label');
+  const ld=document.getElementById('left-door-btn'),rd=document.getElementById('right-door-btn');
   ld.innerHTML=S.lD?'DOOR<br>[CLOSED]':'DOOR<br>[OPEN]';
   rd.innerHTML=S.rD?'DOOR<br>[CLOSED]':'DOOR<br>[OPEN]';
   ld.className='door-btn'+(S.lD?' closed':'');
