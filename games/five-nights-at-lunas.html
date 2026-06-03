@@ -311,11 +311,11 @@ function sfxSurvived(){if(muted)return;const ctx=getCtx();[523,659,784,1047].for
 
 // ── GAME DATA ──
 const NIGHT_CFG=[
-  {spds:[.006,.004,.003],drain:.038,warningMs:2200,label:'NIGHT 1 — SHE WAKES'},
-  {spds:[.009,.007,.005],drain:.044,warningMs:1800,label:'NIGHT 2 — SHE HUNTS'},
-  {spds:[.013,.010,.008],drain:.052,warningMs:1400,label:'NIGHT 3 — SHE LURKS'},
-  {spds:[.017,.014,.011],drain:.062,warningMs:1000,label:'NIGHT 4 — SHE RUSHES'},
-  {spds:[.022,.018,.015],drain:.074,warningMs:700, label:'NIGHT 5 — THE FINAL HUNT'},
+  {spds:[.006,.004,.003],drain:.018,warningMs:2200,label:'NIGHT 1 — SHE WAKES'},
+  {spds:[.009,.007,.005],drain:.022,warningMs:1800,label:'NIGHT 2 — SHE HUNTS'},
+  {spds:[.013,.010,.008],drain:.026,warningMs:1400,label:'NIGHT 3 — SHE LURKS'},
+  {spds:[.017,.014,.011],drain:.030,warningMs:1000,label:'NIGHT 4 — SHE RUSHES'},
+  {spds:[.022,.018,.015],drain:.035,warningMs:700, label:'NIGHT 5 — THE FINAL HUNT'},
 ];
 const CAT_MAP_POS=[
   [[90,24],[90,75],[90,121],[38,168],[38,168]],
@@ -378,7 +378,7 @@ function tick(){
   if(!S.run)return;
   S.ticks++;
   let d=S.cfg.drain;
-  if(S.lD)d+=.04;if(S.rD)d+=.04;if(S.lL)d+=.02;if(S.rL)d+=.02;if(S.cams)d+=.025;
+  if(S.lD)d+=.02;if(S.rD)d+=.02;if(S.lL)d+=.01;if(S.rL)d+=.01;if(S.cams)d+=.012;
   S.power=Math.max(0,S.power-d);
   S.hour=Math.min(6,Math.floor(S.ticks/420));
   if(S.power<=0&&!S.po){doPowerOut();return;}
